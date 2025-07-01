@@ -10,6 +10,7 @@
 	<Company>Borics Krisztián</Company>
 	<Description>Calendar management for workdays and holidays</Description>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<RepositoryUrl>https://github.com/boricsk/CalendarManagement</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
