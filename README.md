@@ -114,15 +114,8 @@ Console.WriteLine(c.CountDays(start, end)); // -> (21,10) Number of workdays and
 
 ```
 
-
-
-
-
 <p align="center">
-  <img src=./out.jpg>
-</p><br>
-<p align="center">
-  <a href="https://www.nuget.org/packages/MifareClassic/1.0.0" target="_blank" >
+  <a href="https://www.nuget.org/packages/CalendarManagement" target="_blank" >
     <img src="./nuget_logo.png" alt="NuGet Page">
   </a>
 </p>
