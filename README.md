@@ -116,6 +116,6 @@ Console.WriteLine(c.CountDays(start, end)); // -> (21,10) Number of workdays and
 
 <p align="center">
   <a href="https://www.nuget.org/packages/CalendarManagement" target="_blank" >
-    <img src="./nuget_logo.png" alt="NuGet Page">
+    <img height=100 width=200 src="./nuget_logo.png" alt="NuGet Page">
   </a>
 </p>
