@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>Calendar Management</Title>
-	<Version>1.0.0</Version>
+	<Version>1.0.1</Version>
 	<Authors>Borics Krisztián</Authors>
 	<Company>Borics Krisztián</Company>
 	<Description>Calendar management for workdays and holidays</Description>

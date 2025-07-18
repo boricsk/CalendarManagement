@@ -2,57 +2,54 @@
 {
     public class CalendarMgmnt
     {
-        private List<FixHoliday> _fixHolidays = new();
+        private List<FixHoliday>? _fixHolidays = new();
         private List<MovedWorkDays>? _movedWorkDays = new();
+        private List<DateOnly>? _additionalWorkdays = new();
 
         #region Constructors
         /// <summary>
-        /// Initializes a new instance of the <see cref="CalendarMgmnt"/> class with a list of fixed holidays  and an
-        /// optional list of moved workdays.
+        /// Initializes a new instance of the <see cref="CalendarMgmnt"/> class with optional holiday and workday
+        /// configurations.
         /// </summary>
-        /// <remarks>This constructor allows you to define a calendar management system by specifying
-        /// fixed holidays  and optionally moved workdays. Fixed holidays are mandatory, while moved workdays can be
-        /// omitted  if not applicable.</remarks>
-        /// <param name="fixHolidays">A list of fixed holidays that will be used to manage the calendar. This parameter cannot be null.</param>
-        /// <param name="movedWorkDays">An optional list of moved workdays that will be used to adjust the calendar. If not provided,  the calendar
-        /// will only consider fixed holidays.</param>
-        public CalendarMgmnt(List<FixHoliday> fixHolidays, List<MovedWorkDays>? movedWorkDays = null)
-        {
-            _fixHolidays = fixHolidays;
-            _movedWorkDays = movedWorkDays;
-        }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CalendarMgmnt"/> class, optionally with a list of moved
-        /// workdays.
-        /// </summary>
-        /// <remarks>This constructor also initializes a predefined set of fixed holidays specific to
-        /// Hungary, including New Year's Day, Revolution Day, Labour Day, State Founding Day, Republic Day, Halloween,
-        /// Christmas Days, and Silvester.</remarks>
-        /// <param name="movedWorkDays">A list of moved workdays to be used for calendar management. If <see langword="null"/>, the calendar will be
-        /// initialized without any moved workdays.</param>
-        public CalendarMgmnt(List<MovedWorkDays>? movedWorkDays = null)
+        /// <remarks>If <paramref name="fixHolidays"/> is <see langword="null"/>, the constructor
+        /// initializes a default set of fixed holidays based on Hungarian national holidays. This includes New Year's
+        /// Day, Revolution Day, Labor Day, State Founding Day, Republic Day, All Saints' Day, Christmas (two days), and
+        /// New Year's Eve.</remarks>
+        /// <param name="fixHolidays">A list of fixed holidays to be used by the calendar. If <see langword="null"/>, a default set of Hungarian
+        /// holidays is initialized.</param>
+        /// <param name="movedWorkDays">A list of workdays that have been moved from their regular schedule, typically due to holiday adjustments.</param>
+        /// <param name="additionalWorkdays">A list of additional workdays to be included in the calendar.</param>
+        public CalendarMgmnt(List<FixHoliday>? fixHolidays = null, List<MovedWorkDays>? movedWorkDays = null, List<DateOnly>? additionalWorkdays = null)
         {
             _movedWorkDays = movedWorkDays;
+            _additionalWorkdays = additionalWorkdays;
 
-            //Fix holidays in Hungarian
-            FixHoliday newYear = new FixHoliday { Month = 1, Day = 1 };
-            _fixHolidays.Add(newYear);
-            FixHoliday revolution = new FixHoliday { Month = 3, Day = 15 };
-            _fixHolidays.Add(revolution);
-            FixHoliday labourDay = new FixHoliday { Month = 5, Day = 1 };
-            _fixHolidays.Add(labourDay);
-            FixHoliday stateFoundingDay = new FixHoliday { Month = 8, Day = 20 };
-            _fixHolidays.Add(stateFoundingDay);
-            FixHoliday republicDay = new FixHoliday { Month = 10, Day = 23 };
-            _fixHolidays.Add(republicDay);
-            FixHoliday helloween = new FixHoliday { Month = 11, Day = 1 };
-            _fixHolidays.Add(helloween);
-            FixHoliday xmas1 = new FixHoliday { Month = 12, Day = 25 };
-            _fixHolidays.Add(xmas1);
-            FixHoliday xmas2 = new FixHoliday { Month = 12, Day = 26 };
-            _fixHolidays.Add(xmas2);
-            FixHoliday silvester = new FixHoliday { Month = 12, Day = 31 };
-            _fixHolidays.Add(silvester);
+            if (fixHolidays is null)
+            {
+                //Fix holidays in Hungarian
+                FixHoliday newYear = new FixHoliday { Month = 1, Day = 1 };
+                _fixHolidays.Add(newYear);
+                FixHoliday revolution = new FixHoliday { Month = 3, Day = 15 };
+                _fixHolidays.Add(revolution);
+                FixHoliday labourDay = new FixHoliday { Month = 5, Day = 1 };
+                _fixHolidays.Add(labourDay);
+                FixHoliday stateFoundingDay = new FixHoliday { Month = 8, Day = 20 };
+                _fixHolidays.Add(stateFoundingDay);
+                FixHoliday republicDay = new FixHoliday { Month = 10, Day = 23 };
+                _fixHolidays.Add(republicDay);
+                FixHoliday helloween = new FixHoliday { Month = 11, Day = 1 };
+                _fixHolidays.Add(helloween);
+                FixHoliday xmas1 = new FixHoliday { Month = 12, Day = 25 };
+                _fixHolidays.Add(xmas1);
+                FixHoliday xmas2 = new FixHoliday { Month = 12, Day = 26 };
+                _fixHolidays.Add(xmas2);
+                FixHoliday silvester = new FixHoliday { Month = 12, Day = 31 };
+                _fixHolidays.Add(silvester);
+            }
+            else
+            {
+                _fixHolidays = fixHolidays;
+            }
         }
         #endregion
 
@@ -151,13 +148,20 @@
 
             if (_movedWorkDays != null)
             {
-                if (_movedWorkDays.Where(S => S.MovedTo == checkDate).Any()) { return false; }
+                if (_movedWorkDays.Where(s => s.MovedTo == checkDate).Any()) { return false; }
                 if (_movedWorkDays.Where(s => s.MovedWorkday == checkDate).Any()) { return true; }
             }
+
+            if (_additionalWorkdays != null) { if (_additionalWorkdays.Contains(checkDate)) { return false; } }
+
+
             if (checkDate.DayOfWeek == DayOfWeek.Sunday || checkDate.DayOfWeek == DayOfWeek.Saturday) { return true; }
+
+
             if (_fixHolidays.Where(d => d.Month == month && d.Day == day).Any()) { return true; }
 
             if (GetEasterMonday(year) == checkDate || GetEasterMonday(year).AddDays(-3) == checkDate) { return true; }
+
             if (GetPentecostDay(year) == checkDate) { return true; }
 
             return false;

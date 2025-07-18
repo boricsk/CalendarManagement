@@ -30,9 +30,7 @@ And for the moved working days:<br>
 ```
 This list must also be constructed before instantiation if you want to use it. It is not mandatory to pass it to the constructor during instantiation.
 
-- Example
-
-1. You should create a list for the fix holidays
+1. You should create a list for the fix holidays.
 
 ```csharp
 private List<FixHoliday> _fixHolidays = new();
@@ -82,17 +80,25 @@ MovedWorkDays mwd3 = new MovedWorkDays()
 movedWorkdays.Add(mwd3);
 
 ```
-
-3. Create an instance
+3. You should create a list for the additional workdays, if necessary.
 ```csharp
-CalendarMgmnt c = new CalendarMgmnt(_fixHolidays, movedWorkdays);
+List<DateOnly> additionalWorkdays = new List<DateOnly>()
+{ 
+    new DateOnly(2025,03,08),
+    new DateOnly(2025,03,22),
+};
 
-CalendarMgmnt hun = new CalendarMgmnt(movedWorkdays);
-// For Hungarian users, in this case the constuctor build automatically the list of fix holidays.
-// movedWorkdays is optional.
 ```
 
-4. Methods
+4. Create an instance
+```csharp
+CalendarMgmnt c = new CalendarMgmnt(fixHolidays: _fixHolidays, movedWorkDays: movedWorkdays, additionalWorkdays: additionalWorkdays);
+
+// For Hungarian users, in this case the constuctor build automatically the list of fix holidays.
+CalendarMgmnt c = new CalendarMgmnt(fixHolidays: null, movedWorkDays: movedWorkdays, additionalWorkdays: additionalWorkdays);
+```
+
+5. Methods
 ```csharp
 CalendarMgmnt c = new CalendarMgmnt(_fixHolidays, movedWorkdays);
 // movedWorkdays is optional.
@@ -114,15 +120,8 @@ Console.WriteLine(c.CountDays(start, end)); // -> (21,10) Number of workdays and
 
 ```
 
-
-
-
-
 <p align="center">
-  <img src=./out.jpg>
-</p><br>
-<p align="center">
-  <a href="https://www.nuget.org/packages/MifareClassic/1.0.0" target="_blank" >
-    <img src="./nuget_logo.png" alt="NuGet Page">
+  <a href="https://www.nuget.org/packages/CalendarManagement" target="_blank" >
+    <img height=100 width=200 src="./nuget_logo.png" alt="NuGet Page">
   </a>
 </p>
